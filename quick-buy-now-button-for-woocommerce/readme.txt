@@ -5,8 +5,8 @@ Requires PHP: 7.4
 Requires at least: 4.8
 Tested up to: 6.6
 WC requires at least: 4.5
-WC tested up to: 9.2
-Stable tag: 1.0.13
+WC tested up to: 9.3
+Stable tag: 1.0.14
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -110,6 +110,10 @@ If you are unable to use any of the methods due to internet connectivity and fil
 7. Activate the plugin.
 
 == Changelog ==
+
+= 1.0.14 =
+* Add - WooCommerce 9.3+ compatibility
+* Update - Settings page
 
 = 1.0.13 =
 * Add - WordPress 6.6+ compatibility

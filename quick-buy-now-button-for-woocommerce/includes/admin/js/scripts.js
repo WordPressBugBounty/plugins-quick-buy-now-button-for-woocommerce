@@ -1,14 +1,33 @@
 (function ($) {
 	$( function() {
-
 		// Global custom redirect URL field Hide/Show
-		$( 'select#wbnb_redirect_location' ).on( 'change', function() {
-			if ( 'custom' === $( this ).val() ) {
-				$( this ).closest('tr').next( 'tr' ).show();
-			} else {
-				$( this ).closest('tr').next( 'tr' ).hide();
+		// $( 'select#wbnb_redirect_location' ).on( 'change', function() {
+		// 	if ( 'custom' === $( this ).val() ) {
+		// 		$( this ).closest('tr').next( 'tr' ).show();
+		// 	} else {
+		// 		$( this ).closest('tr').next( 'tr' ).hide();
+		// 	}
+		// }).trigger( 'change' );
+
+		
+		$( window ).on( 'load', function() {
+			let redirectLocation = $('input[type=radio][name=wbnb_redirect_location]:checked').val();
+
+			if ( 'custom' !== redirectLocation ) {
+				$( '#wbnb_custom_redirect_url' ).closest('tr').hide();
 			}
-		}).trigger( 'change' );
+		});
+
+		$( 'input[type=radio][name=wbnb_redirect_location]' ).on( 'change', function() {
+			let val = $( this ).val();
+			let customUrlField = $( '#wbnb_custom_redirect_url' ).closest('tr');
+
+			customUrlField.hide();
+
+			if ( 'custom' === val ) {
+				customUrlField.show();
+			} 
+		});
 
 		// Product level custom redirect URL field Hide/Show
 		$( 'select#buy_now_redirect_location' ).on( 'change', function() {

@@ -93,15 +93,17 @@ class Woo_Buy_Now_Button_Settings extends WC_Settings_Page {
 
             array(
                 'id'       => 'wbnb_redirect_location',
-                'type'     => 'select',
+                'type'     => 'radio',
                 'title'    => esc_html__( 'Redirect Location', 'woo-buy-now-button' ),
                 'desc_tip' => esc_html__( 'Select redirect location to after click buy now button.', 'woo-buy-now-button' ),
-                'class'    => 'wc-enhanced-select',
+                // 'class'    => 'wc-enhanced-select',
                 'default'  => 'checkout',
                 'options'  => array(
-                    'checkout'  => esc_html__( 'Checkout Page', 'woo-buy-now-button' ),
-                    'cart'      => esc_html__( 'Cart Page', 'woo-buy-now-button' ),
-                    'custom'    => esc_html__( 'Custom Page', 'woo-buy-now-button' ),
+                    'checkout'          => esc_html__( 'Checkout Page', 'woo-buy-now-button' ),
+                    'cart'				=> esc_html__( 'Cart Page', 'woo-buy-now-button' ),
+                    'custom'			=> esc_html__( 'Custom Page', 'woo-buy-now-button' ),
+                    // 'popup-cart'		=> esc_html__( 'Popup Cart', 'woo-buy-now-button' ),
+                    // 'popup-checkout'	=> esc_html__( 'Popup Checkout', 'woo-buy-now-button' ),
                 ),
             ),
 
@@ -136,7 +138,7 @@ class Woo_Buy_Now_Button_Settings extends WC_Settings_Page {
                 'id'      => 'wbnb_reset_cart',
                 'type'    => 'checkbox',
                 'title'   => esc_html__( 'Auto Reset Cart', 'woo-buy-now-button' ),
-                'desc'    => esc_html__( 'Reset the Cart Before Doing Buy Now.', 'woo-buy-now-button' ),
+                'desc'    => esc_html__( 'Clear the cart when clicked Buy Now button.', 'woo-buy-now-button' ),
                 'default' => 'no'
             ),
 
@@ -212,10 +214,10 @@ class Woo_Buy_Now_Button_Settings extends WC_Settings_Page {
 
             array(
                 'id'      => 'wbnb_button_style',
-                'type'    => 'select',
-                'class'   => 'wc-enhanced-select',
+                'type'    => 'radio',
+                //'class'   => 'wc-enhanced-select',
                 'title'   => esc_html__( 'Button Styles', 'woo-buy-now-button' ),
-                'desc'    => esc_html__( 'Choose button style.', 'woo-buy-now-button' ),
+                'desc_tip'    => esc_html__( 'Choose button style.', 'woo-buy-now-button' ),
                 'default' => 'default',
                 'options'  => array(
                     'default'   => esc_html__( 'Default Style', 'woo-buy-now-button' ),

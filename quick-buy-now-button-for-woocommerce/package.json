@@ -1,0 +1,33 @@
+{
+  "name": "quick-buy-now-button-for-woocommerce",
+  "version": "1.0.0",
+  "description": "Quick Buy Now Button for WooCommerce",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "wp-scripts build",
+    "format": "wp-scripts format",
+    "lint:css": "wp-scripts lint-style",
+    "lint:js": "wp-scripts lint-js",
+    "packages-update": "wp-scripts packages-update",
+    "plugin-zip": "wp-scripts plugin-zip",
+    "start": "wp-scripts start"
+  },
+  "keywords": [
+    "woocommerce",
+    "wordpress"
+  ],
+  "author": "Tanvirul Haque",
+  "license": "GPL-3.0+",
+  "devDependencies": {
+    "@wordpress/scripts": "^30.0.0",
+    "sass": "^1.83.0"
+  },
+  "files": [
+    "*.php",
+    "includes",
+    "languages",
+    "build",
+    "readme.txt",
+    "wpml-config.xml"
+  ]
+}

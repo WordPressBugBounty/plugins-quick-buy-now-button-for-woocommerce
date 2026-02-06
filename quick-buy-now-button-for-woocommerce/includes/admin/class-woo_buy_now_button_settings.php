@@ -45,7 +45,7 @@ class Woo_Buy_Now_Button_Settings extends WC_Settings_Page {
                 . '<p>' . sprintf('<a href="%1$s" target="_blank">%2$s</a>', esc_url('https://wpxpress.net/docs/quick-buy-now-button-for-woocommerce/'), esc_html__( 'Documentation', 'woo-buy-now-button' ) ) . ' | '
                 . sprintf('<a href="%1$s" target="_blank">%2$s</a>', esc_url('https://wpxpress.net/submit-ticket/'), esc_html__( 'Get Help &amp; Support', 'woo-buy-now-button' ) )
                 . $this->get_pro_link_html() . ' | ' 
-                .sprintf('<a href="%1$s" target="_blank" style="text-decoration: none; font-weight:bold;">%2$s</a>', esc_url( 'https://wordpress.org/support/plugin/quick-buy-now-button-for-woocommerce/reviews/#new-post' ), esc_html__( 'Leave a review here ⭐️⭐️⭐️⭐️⭐️', 'recaptcha-for-woocommerce' ) ).'</p>',
+                .sprintf('<a href="%1$s" target="_blank" style="text-decoration: none; font-weight:bold;">%2$s</a>', esc_url( 'https://wordpress.org/support/plugin/quick-buy-now-button-for-woocommerce/reviews/?rate=5#new-post' ), esc_html__( 'Leave a review here ⭐️⭐️⭐️⭐️⭐️', 'recaptcha-for-woocommerce' ) ).'</p>',
             ),
 
             array(
@@ -71,6 +71,7 @@ class Woo_Buy_Now_Button_Settings extends WC_Settings_Page {
                 'class'    => 'wc-enhanced-select',
                 'title'    => esc_html__( 'Button Position on Single', 'woo-buy-now-button' ),
                 'desc_tip' => esc_html__( 'Select position where button will show on single product page.', 'woo-buy-now-button' ),
+                'desc' => sprintf( esc_html__( 'Or use shortcode to place button on Single Product Page. %s (beta)', 'woo-buy-now-button' ), '<code>[woo_buy_now_button_single]</code>' ),
                 'default'  => 'after_add_to_cart',
                 'options'  => array(
                     'before_add_to_cart'    => esc_html__( 'Before Add to Cart Button', 'woo-buy-now-button' ),
@@ -85,6 +86,7 @@ class Woo_Buy_Now_Button_Settings extends WC_Settings_Page {
                 'default'  => 'after_add_to_cart',
                 'class'    => 'wc-enhanced-select',
                 'desc_tip' => esc_html__( 'Select position where button will show on shop and archive page.', 'woo-buy-now-button' ),
+                'desc' => sprintf( esc_html__( 'Or use shortcode to place button on Shop / Archive Page. %s (beta)', 'woo-buy-now-button' ), '<code>[woo_buy_now_button_archive]</code>' ),
                 'options'  => array(
                     'before_add_to_cart'    => esc_html__( 'Before Add to Cart Button', 'woo-buy-now-button' ),
                     'after_add_to_cart' => esc_html__( 'After Add to Cart Button', 'woo-buy-now-button' ),
@@ -102,8 +104,8 @@ class Woo_Buy_Now_Button_Settings extends WC_Settings_Page {
                     'checkout'          => esc_html__( 'Checkout Page', 'woo-buy-now-button' ),
                     'cart'				=> esc_html__( 'Cart Page', 'woo-buy-now-button' ),
                     'custom'			=> esc_html__( 'Custom Page', 'woo-buy-now-button' ),
+                    'popup-checkout'	=> esc_html__( 'Popup Checkout (beta)', 'woo-buy-now-button' ),
                     // 'popup-cart'		=> esc_html__( 'Popup Cart', 'woo-buy-now-button' ),
-                    // 'popup-checkout'	=> esc_html__( 'Popup Checkout', 'woo-buy-now-button' ),
                 ),
             ),
 
@@ -146,30 +148,44 @@ class Woo_Buy_Now_Button_Settings extends WC_Settings_Page {
                 'id'      => 'wbnb_hide_add_to_cart',
                 'type'    => 'checkbox',
                 'title'   => esc_html__( 'Hide Add To Cart', 'woo-buy-now-button' ),
-                'desc'    => esc_html__( 'Hide Add To Cart Button from Single Product and Shop Page.', 'woo-buy-now-button' ),
+                'desc'    => ! function_exists( 'woo_buy_now_button_pro' ) 
+                    ? esc_html__( 'Hide Add To Cart Button from Single Product and Shop Page.', 'woo-buy-now-button' ) . ' ' . sprintf( '<a href="%s" target="_blank" style="color:#d63638; font-size: 12px;"><b>%s</b></a>', esc_url('https://wpxpress.net/products/quick-buy-now-button-for-woocommerce/'), __( 'Upgrade to Pro to hide add to cart.', 'woo-buy-now-button' ) )
+                    : esc_html__( 'Hide Add To Cart Button from Single Product and Shop Page.', 'woo-buy-now-button' ),
                 'default' => 'no',
                 'is_pro'  => true,
             ),
 
             array(
-                'id'      => 'wbnb_disabled_product_type',
+                'id'      => 'wbnb_ajax_add_to_cart',
+                'type'    => 'checkbox',
+                'title'   => esc_html__( 'Ajax Add to Cart', 'woo-buy-now-button' ),
+                'desc'    => esc_html__( 'Enable Ajax Add to Cart on single product page.', 'woo-buy-now-button' ),
+                'default' => 'no'
+            ),
+
+            array(
+                'id'      => 'wbnb_enable_product_types', // was 'wbnb_disabled_product_type'
                 'type'    => 'multiselect',
-                'title'   => esc_html__( 'Disable on Product Types', 'woo-buy-now-button' ),
-                'desc' => esc_html__( 'Disable Buy Now Button Based on Specific Product Types.', 'woo-buy-now-button' ),
+                'title'   => esc_html__( 'Enable on Product Types', 'woo-buy-now-button' ),
+                'desc' => ! function_exists( 'woo_buy_now_button_pro' ) 
+                    ? esc_html__( 'Enable Plugin Features Based on Specific Product Types.', 'woo-buy-now-button' ) . ' ' . sprintf( '<a href="%s" target="_blank" style="color:#d63638; font-size: 12px;"><b>%s</b></a>', esc_url('https://wpxpress.net/products/quick-buy-now-button-for-woocommerce/'), __( 'Upgrade to Pro to enable all product types.', 'woo-buy-now-button' ) )
+                    : esc_html__( 'Enable Plugin Features Based on Specific Product Types.', 'woo-buy-now-button' ),
                 'class'   => 'wc-enhanced-select',
-                'default' => array(''),
+                'default' => array( 'simple', 'variable' ),
                 'options' => wc_get_product_types(),
+                'allowed_options' => $this->get_allowed_product_types(),
                 'custom_attributes' => array(
                     'data-placeholder'=> esc_html__( 'Choose specific product type(s).', 'woo-buy-now-button' ),
                 ),
-                'is_pro' => true,
             ),
-
+            
             array(
                 'id'      => 'wbnb_disabled_categories',
                 'type'    => 'multiselect',
                 'title'   => esc_html__( 'Disable on Categories', 'woo-buy-now-button' ),
-                'desc'    => 'Disable Buy Now Button Based on Specific Categories.',
+                'desc'    => ! function_exists( 'woo_buy_now_button_pro' ) 
+                    ? esc_html__( 'Disable Buy Now Button Based on Specific Categories.', 'woo-buy-now-button' ) . ' ' . sprintf( '<a href="%s" target="_blank" style="color:#d63638; font-size: 12px;"><b>%s</b></a>', esc_url('https://wpxpress.net/products/quick-buy-now-button-for-woocommerce/'), __( 'Upgrade to Pro to disable on categories.', 'woo-buy-now-button' ) )
+                    : esc_html__( 'Disable Buy Now Button Based on Specific Categories.', 'woo-buy-now-button' ),
                 'class'    => 'wc-enhanced-select',
                 'default'  => 'all',
                 'options'  => $this->get_product_category_id_name_array(),
@@ -183,7 +199,9 @@ class Woo_Buy_Now_Button_Settings extends WC_Settings_Page {
                 'id'       => 'wbnb_disabled_products',
                 'type'     => 'multiselect',
                 'title'    => esc_html__( 'Disable on Products', 'woo-buy-now-button' ),
-                'desc'     => 'Disable Buy Now Button Based on Specific Products.',
+                'desc'     => ! function_exists( 'woo_buy_now_button_pro' ) 
+                    ? esc_html__( 'Disable Buy Now Button Based on Specific Products.', 'woo-buy-now-button' ) . ' ' . sprintf( '<a href="%s" target="_blank" style="color:#d63638; font-size: 12px;"><b>%s</b></a>', esc_url('https://wpxpress.net/products/quick-buy-now-button-for-woocommerce/'), __( 'Upgrade to Pro to disable on products.', 'woo-buy-now-button' ) )
+                    : esc_html__( 'Disable Buy Now Button Based on Specific Products.', 'woo-buy-now-button' ),
                 'class'    => 'wc-enhanced-select',
                 'default'  => '',
                 'options'  => $this->get_product_id_name_array(),
@@ -217,11 +235,11 @@ class Woo_Buy_Now_Button_Settings extends WC_Settings_Page {
                 'type'    => 'radio',
                 //'class'   => 'wc-enhanced-select',
                 'title'   => esc_html__( 'Button Styles', 'woo-buy-now-button' ),
-                'desc_tip'    => esc_html__( 'Choose button style.', 'woo-buy-now-button' ),
+                'desc_tip'    => esc_html__( 'Choose button styles, default styles come from theme.', 'woo-buy-now-button' ),
                 'default' => 'default',
                 'options'  => array(
-                    'default'   => esc_html__( 'Default Style', 'woo-buy-now-button' ),
-                    'custom'    => esc_html__( 'Custom Style', 'woo-buy-now-button' ),
+                    'default'   => esc_html__( 'Default Styles (Theme)', 'woo-buy-now-button' ),
+                    'custom'    => esc_html__( 'Custom Styles', 'woo-buy-now-button' ),
                 ),
             ),
 
@@ -507,6 +525,7 @@ class Woo_Buy_Now_Button_Settings extends WC_Settings_Page {
                 case 'select':
                 case 'multiselect':
                     $option_value = $value['value'];
+                    $allowed_options = isset( $value['allowed_options'] ) ? $value['allowed_options'] : array();
 
                     ?>
                     <tr class="<?php echo esc_attr( $class ) ?>" valign="top">
@@ -524,6 +543,8 @@ class Woo_Buy_Now_Button_Settings extends WC_Settings_Page {
                                 >
                                 <?php
                                 foreach ( $value['options'] as $key => $val ) {
+                                    // Check if this option should be disabled
+                                    $is_disabled = ! empty( $allowed_options ) && ! in_array( $key, $allowed_options, true );
                                     ?>
                                     <option value="<?php echo esc_attr( $key ); ?>"
                                         <?php
@@ -534,8 +555,12 @@ class Woo_Buy_Now_Button_Settings extends WC_Settings_Page {
                                             selected( $option_value, (string) $key );
                                         }
 
+                                        if ( $is_disabled ) {
+                                            echo 'disabled="disabled"';
+                                        }
+
                                         ?>
-                                    ><?php echo esc_html( $val ); ?></option>
+                                    ><?php echo esc_html( $val ); ?><?php echo $is_disabled ? ' (Pro)' : ''; ?></option>
                                     <?php
                                 }
                                 ?>
@@ -737,6 +762,18 @@ class Woo_Buy_Now_Button_Settings extends WC_Settings_Page {
         $settings = $this->get_settings( $current_section );
         WC_Admin_Settings::save_fields( $settings );
 
+        // Validate and sanitize wbnb_enable_product_types for free version
+        if ( ! function_exists( 'woo_buy_now_button_pro' ) ) {
+            $enabled_types = get_option( 'wbnb_enable_product_types', array() );
+            
+            if ( is_array( $enabled_types ) ) {
+                // Only allow types specified in get_allowed_product_types()
+                $allowed_types = $this->get_allowed_product_types();
+                $enabled_types = array_intersect( $enabled_types, $allowed_types );
+                update_option( 'wbnb_enable_product_types', $enabled_types );
+            }
+        }
+
         if ( $current_section ) {
             do_action( 'woocommerce_update_options_' . $this->id . '_' . $current_section );
             do_action( 'woocommerce_update_options_woo-buy-now-button', $current_section );
@@ -771,6 +808,19 @@ class Woo_Buy_Now_Button_Settings extends WC_Settings_Page {
         }
 
         return $lists;
+    }
+
+    /**
+     * Get allowed product types based on version (free or pro)
+     */
+    public function get_allowed_product_types() {
+        // In free version, only 'simple' and 'variable' are allowed
+        if ( ! function_exists( 'woo_buy_now_button_pro' ) ) {
+            return array( 'simple', 'variable' );
+        }
+        
+        // In pro version, all types are allowed (empty array means no restrictions)
+        return array();
     }
 
     public function get_pro_link_html() {

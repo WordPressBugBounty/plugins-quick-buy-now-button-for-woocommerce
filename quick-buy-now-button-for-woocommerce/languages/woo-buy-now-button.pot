@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Quick Buy Now Button for WooCommerce\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-26 06:29+0000\n"
+"POT-Creation-Date: 2026-01-30 10:37+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -20,33 +20,37 @@ msgstr ""
 msgid "<strong>Quick Buy Now Button for WooCommerce</strong> is an add-on of "
 msgstr ""
 
-#: includes/admin/class-woo_buy_now_button_settings.php:77
-#: includes/admin/class-woo_buy_now_button_settings.php:90
+#: includes/admin/class-woo_buy_now_button_settings.php:78
+#: includes/admin/class-woo_buy_now_button_settings.php:92
 msgid "After Add to Cart Button"
 msgstr ""
 
-#: includes/admin/class-woo_buy_now_button_settings.php:140
+#: includes/admin/class-woo_buy_now_button_settings.php:161
+msgid "Ajax Add to Cart"
+msgstr ""
+
+#: includes/admin/class-woo_buy_now_button_settings.php:142
 msgid "Auto Reset Cart"
 msgstr ""
 
-#: includes/admin/class-woo_buy_now_button_settings.php:76
-#: includes/admin/class-woo_buy_now_button_settings.php:89
+#: includes/admin/class-woo_buy_now_button_settings.php:77
+#: includes/admin/class-woo_buy_now_button_settings.php:91
 msgid "Before Add to Cart Button"
 msgstr ""
 
-#: includes/admin/class-woo_buy_now_button_settings.php:248
+#: includes/admin/class-woo_buy_now_button_settings.php:266
 msgid "Border Color"
 msgstr ""
 
-#: includes/admin/class-woo_buy_now_button_settings.php:271
+#: includes/admin/class-woo_buy_now_button_settings.php:289
 msgid "Border Radius"
 msgstr ""
 
-#: includes/admin/class-woo_buy_now_button_settings.php:257
+#: includes/admin/class-woo_buy_now_button_settings.php:275
 msgid "Border size"
 msgstr ""
 
-#: includes/admin/class-woo_buy_now_button_settings.php:82
+#: includes/admin/class-woo_buy_now_button_settings.php:83
 msgid "Button Position on Shop"
 msgstr ""
 
@@ -55,126 +59,145 @@ msgid "Button Position on Single"
 msgstr ""
 
 #: includes/admin/class-woo_buy_now_button_settings.php:27
-#: includes/admin/class-woo_buy_now_button_settings.php:219
+#: includes/admin/class-woo_buy_now_button_settings.php:237
 msgid "Button Styles"
 msgstr ""
 
-#: includes/class-woo_buy_now_button_backend.php:195
-#: includes/admin/class-woo_buy_now_button_settings.php:120
+#: includes/class-woo_buy_now_button_backend.php:201
+#: includes/admin/class-woo_buy_now_button_settings.php:122
 msgid "Button Text"
 msgstr ""
 
-#: includes/class-woo_buy_now_button_backend.php:112
-#: includes/class-woo_buy_now_button_backend.php:130
+#: includes/class-woo_buy_now_button_backend.php:118
+#: includes/class-woo_buy_now_button_backend.php:136
 #: includes/admin/class-woo_buy_now_button_settings.php:14
 msgid "Buy Now Button"
 msgstr ""
 
-#: includes/class-woo_buy_now_button_backend.php:111
+#: includes/class-woo_buy_now_button_backend.php:117
 msgid "Buy Now Button Settings"
 msgstr ""
 
-#: includes/admin/class-woo_buy_now_button_settings.php:212
+#: includes/admin/class-woo_buy_now_button_settings.php:230
 msgid "Buy Now Button Styles"
 msgstr ""
 
-#: includes/admin/class-woo_buy_now_button_settings.php:103
+#: includes/admin/class-woo_buy_now_button_settings.php:105
 msgid "Cart Page"
 msgstr ""
 
-#: includes/class-woo_buy_now_button_backend.php:206
+#: includes/class-woo_buy_now_button_backend.php:212
 msgid "Cart page"
 msgstr ""
 
-#: includes/class-woo_buy_now_button_backend.php:207
-#: includes/admin/class-woo_buy_now_button_settings.php:102
+#: includes/class-woo_buy_now_button_backend.php:213
+#: includes/admin/class-woo_buy_now_button_settings.php:104
 msgid "Checkout Page"
 msgstr ""
 
-#: includes/admin/class-woo_buy_now_button_settings.php:220
-msgid "Choose button style."
+#: includes/admin/class-woo_buy_now_button_settings.php:238
+msgid "Choose button styles, default styles come from theme."
 msgstr ""
 
-#: includes/admin/class-woo_buy_now_button_settings.php:177
+#: includes/admin/class-woo_buy_now_button_settings.php:193
 msgid "Choose specific category(s)."
 msgstr ""
 
-#: includes/admin/class-woo_buy_now_button_settings.php:163
+#: includes/admin/class-woo_buy_now_button_settings.php:178
 msgid "Choose specific product type(s)."
 msgstr ""
 
-#: includes/admin/class-woo_buy_now_button_settings.php:191
+#: includes/admin/class-woo_buy_now_button_settings.php:209
 msgid "Choose specific product(s)."
 msgstr ""
 
-#: includes/admin/class-woo_buy_now_button_settings.php:141
+#: includes/admin/class-woo_buy_now_button_settings.php:143
 msgid "Clear the cart when clicked Buy Now button."
 msgstr ""
 
-#: includes/class-woo_buy_now_button_backend.php:208
-#: includes/admin/class-woo_buy_now_button_settings.php:104
+#: includes/class-woo_buy_now_button_backend.php:214
+#: includes/admin/class-woo_buy_now_button_settings.php:106
 msgid "Custom Page"
 msgstr ""
 
-#: includes/admin/class-woo_buy_now_button_settings.php:113
+#: includes/admin/class-woo_buy_now_button_settings.php:115
 msgid "Custom Redirect URL"
 msgstr ""
 
-#: includes/admin/class-woo_buy_now_button_settings.php:224
-msgid "Custom Style"
+#: includes/admin/class-woo_buy_now_button_settings.php:242
+msgid "Custom Styles"
 msgstr ""
 
-#: includes/class-woo_buy_now_button_backend.php:183
-#: includes/admin/class-woo_buy_now_button_settings.php:127
+#: includes/class-woo_buy_now_button_backend.php:189
+#: includes/admin/class-woo_buy_now_button_settings.php:129
 msgid "Default Shop Quantity"
 msgstr ""
 
-#: includes/admin/class-woo_buy_now_button_settings.php:223
-msgid "Default Style"
+#: includes/admin/class-woo_buy_now_button_settings.php:241
+msgid "Default Styles (Theme)"
 msgstr ""
 
-#: includes/class-woo_buy_now_button_backend.php:161
+#: includes/class-woo_buy_now_button_backend.php:167
 msgid "Disable Buy Now Button"
 msgstr ""
 
-#: includes/admin/class-woo_buy_now_button_settings.php:158
-msgid "Disable Buy Now Button Based on Specific Product Types."
+#: includes/admin/class-woo_buy_now_button_settings.php:187
+#: includes/admin/class-woo_buy_now_button_settings.php:188
+msgid "Disable Buy Now Button Based on Specific Categories."
 msgstr ""
 
-#: includes/class-woo_buy_now_button_backend.php:162
+#: includes/admin/class-woo_buy_now_button_settings.php:203
+#: includes/admin/class-woo_buy_now_button_settings.php:204
+msgid "Disable Buy Now Button Based on Specific Products."
+msgstr ""
+
+#: includes/class-woo_buy_now_button_backend.php:168
 msgid "Disable Buy Now Button for this product."
 msgstr ""
 
-#: includes/admin/class-woo_buy_now_button_settings.php:171
+#: includes/admin/class-woo_buy_now_button_settings.php:185
 msgid "Disable on Categories"
 msgstr ""
 
-#: includes/admin/class-woo_buy_now_button_settings.php:157
-msgid "Disable on Product Types"
-msgstr ""
-
-#: includes/admin/class-woo_buy_now_button_settings.php:185
+#: includes/admin/class-woo_buy_now_button_settings.php:201
 msgid "Disable on Products"
 msgstr ""
 
-#: includes/class-woo_buy_now_button_backend.php:92
+#: includes/class-woo_buy_now_button_backend.php:98
 #: includes/admin/class-woo_buy_now_button_settings.php:45
 msgid "Documentation"
+msgstr ""
+
+#: includes/admin/class-woo_buy_now_button_settings.php:162
+msgid "Enable Ajax Add to Cart on single product page."
 msgstr ""
 
 #: includes/admin/class-woo_buy_now_button_settings.php:54
 msgid "Enable Button on"
 msgstr ""
 
-#: includes/class-woo_buy_now_button_backend.php:218
+#: includes/admin/class-woo_buy_now_button_settings.php:169
+msgid "Enable on Product Types"
+msgstr ""
+
+#: includes/admin/class-woo_buy_now_button_settings.php:171
+#: includes/admin/class-woo_buy_now_button_settings.php:172
+msgid "Enable Plugin Features Based on Specific Product Types."
+msgstr ""
+
+#: includes/class-woo_buy_now_button_backend.php:224
 msgid "Enter custom link only for custom redirect like Amazon product link."
 msgstr ""
 
-#: includes/class-woo_buy_now_button_backend.php:196
+#: includes/class-woo_buy_now_button_backend.php:202
 msgid "Enter Text to Show on Buy Now button for this product."
 msgstr ""
 
-#: includes/admin/class-woo_buy_now_button_settings.php:285
+#: includes/class-woo_buy_now_button_frontend.php:284
+msgid "Failed to add product to cart."
+msgstr ""
+
+#: includes/admin/class-woo_buy_now_button_settings.php:303
 msgid "Font size"
 msgstr ""
 
@@ -182,33 +205,34 @@ msgstr ""
 msgid "General"
 msgstr ""
 
-#: includes/class-woo_buy_now_button_backend.php:93
+#: includes/class-woo_buy_now_button_backend.php:99
 #: includes/admin/class-woo_buy_now_button_settings.php:46
 msgid "Get Help &amp; Support"
 msgstr ""
 
-#: includes/admin/class-woo_buy_now_button_settings.php:778
+#: includes/admin/class-woo_buy_now_button_settings.php:828
 msgid "Get Pro Features"
 msgstr ""
 
-#: includes/class-woo_buy_now_button_backend.php:205
+#: includes/class-woo_buy_now_button_backend.php:211
 msgid "Global"
 msgstr ""
 
-#: includes/class-woo_buy_now_button_backend.php:70
+#: includes/class-woo_buy_now_button_backend.php:76
 msgid "Go Pro"
 msgstr ""
 
-#: includes/class-woo_buy_now_button_backend.php:168
-#: includes/admin/class-woo_buy_now_button_settings.php:148
+#: includes/class-woo_buy_now_button_backend.php:174
+#: includes/admin/class-woo_buy_now_button_settings.php:150
 msgid "Hide Add To Cart"
 msgstr ""
 
-#: includes/class-woo_buy_now_button_backend.php:169
+#: includes/class-woo_buy_now_button_backend.php:175
 msgid "Hide Add To Cart Button for this product."
 msgstr ""
 
-#: includes/admin/class-woo_buy_now_button_settings.php:149
+#: includes/admin/class-woo_buy_now_button_settings.php:152
+#: includes/admin/class-woo_buy_now_button_settings.php:153
 msgid "Hide Add To Cart Button from Single Product and Shop Page."
 msgstr ""
 
@@ -220,6 +244,14 @@ msgstr ""
 msgid "https://wpxpress.net"
 msgstr ""
 
+#: includes/class-woo_buy_now_button_frontend.php:192
+msgid "Invalid product."
+msgstr ""
+
+#: includes/class-woo_buy_now_button_frontend.php:174
+msgid "Loading Checkout..."
+msgstr ""
+
 #. Description of the plugin
 msgid ""
 "Makes your customers' checkout process easier and faster and allows you to "
@@ -227,33 +259,63 @@ msgid ""
 "quick purchase."
 msgstr ""
 
-#: includes/admin/class-woo_buy_now_button_settings.php:298
+#: includes/admin/class-woo_buy_now_button_settings.php:316
 msgid "Margin"
 msgstr ""
 
-#: includes/admin/class-woo_buy_now_button_settings.php:306
+#: includes/admin/class-woo_buy_now_button_settings.php:89
+#, php-format
+msgid "Or use shortcode to place button on Shop / Archive Page. %s (beta)"
+msgstr ""
+
+#: includes/admin/class-woo_buy_now_button_settings.php:74
+#, php-format
+msgid "Or use shortcode to place button on Single Product Page. %s (beta)"
+msgstr ""
+
+#: includes/admin/class-woo_buy_now_button_settings.php:324
 msgid "Padding"
+msgstr ""
+
+#: includes/admin/class-woo_buy_now_button_settings.php:107
+msgid "Popup Checkout (beta)"
+msgstr ""
+
+#: includes/class-woo_buy_now_button_frontend.php:259
+msgid "Product added to cart."
+msgstr ""
+
+#: includes/class-woo_buy_now_button_frontend.php:205
+msgid "Product not found."
+msgstr ""
+
+#: includes/class-woo_buy_now_button_frontend.php:210
+msgid "Product type not supported."
 msgstr ""
 
 #. Name of the plugin
 msgid "Quick Buy Now Button for WooCommerce"
 msgstr ""
 
-#: includes/class-woo_buy_now_button_backend.php:154
+#: includes/class-woo_buy_now_button_backend.php:160
 #: includes/admin/class-woo_buy_now_button_settings.php:43
 msgid "Quick Buy Now Button Settings"
 msgstr ""
 
-#: includes/class-woo_buy_now_button_backend.php:217
+#: includes/class-woo_buy_now_button_backend.php:223
 msgid "Redirect Custom Link"
 msgstr ""
 
-#: includes/class-woo_buy_now_button_backend.php:203
-#: includes/admin/class-woo_buy_now_button_settings.php:97
+#: includes/class-woo_buy_now_button_backend.php:209
+#: includes/admin/class-woo_buy_now_button_settings.php:99
 msgid "Redirect Location"
 msgstr ""
 
-#: includes/admin/class-woo_buy_now_button_settings.php:87
+#: includes/class-woo_buy_now_button_frontend.php:188
+msgid "Security check failed."
+msgstr ""
+
+#: includes/admin/class-woo_buy_now_button_settings.php:88
 msgid "Select position where button will show on shop and archive page."
 msgstr ""
 
@@ -261,61 +323,61 @@ msgstr ""
 msgid "Select position where button will show on single product page."
 msgstr ""
 
-#: includes/admin/class-woo_buy_now_button_settings.php:98
+#: includes/admin/class-woo_buy_now_button_settings.php:100
 msgid "Select redirect location to after click buy now button."
 msgstr ""
 
-#: includes/class-woo_buy_now_button_backend.php:210
+#: includes/class-woo_buy_now_button_backend.php:216
 msgid "Select where to redirect for this product."
 msgstr ""
 
-#: includes/admin/class-woo_buy_now_button_settings.php:240
+#: includes/admin/class-woo_buy_now_button_settings.php:258
 msgid "Set button background color."
 msgstr ""
 
-#: includes/admin/class-woo_buy_now_button_settings.php:249
+#: includes/admin/class-woo_buy_now_button_settings.php:267
 msgid "Set button border color."
 msgstr ""
 
-#: includes/admin/class-woo_buy_now_button_settings.php:272
+#: includes/admin/class-woo_buy_now_button_settings.php:290
 msgid "Set button border radius in px."
 msgstr ""
 
-#: includes/admin/class-woo_buy_now_button_settings.php:258
+#: includes/admin/class-woo_buy_now_button_settings.php:276
 msgid "Set button border size in px."
 msgstr ""
 
-#: includes/admin/class-woo_buy_now_button_settings.php:232
+#: includes/admin/class-woo_buy_now_button_settings.php:250
 msgid "Set button text color."
 msgstr ""
 
-#: includes/class-woo_buy_now_button_backend.php:184
+#: includes/class-woo_buy_now_button_backend.php:190
 msgid "Set Default Quantity for this product on shop / archive page."
 msgstr ""
 
-#: includes/admin/class-woo_buy_now_button_settings.php:286
+#: includes/admin/class-woo_buy_now_button_settings.php:304
 msgid "Set font size in px."
 msgstr ""
 
-#: includes/admin/class-woo_buy_now_button_settings.php:114
+#: includes/admin/class-woo_buy_now_button_settings.php:116
 msgid "Set global custom URL to redirect."
 msgstr ""
 
-#: includes/admin/class-woo_buy_now_button_settings.php:299
+#: includes/admin/class-woo_buy_now_button_settings.php:317
 msgid "Set margin value in px."
 msgstr ""
 
-#: includes/admin/class-woo_buy_now_button_settings.php:307
+#: includes/admin/class-woo_buy_now_button_settings.php:325
 msgid "Set padding value in px."
 msgstr ""
 
-#: includes/admin/class-woo_buy_now_button_settings.php:128
+#: includes/admin/class-woo_buy_now_button_settings.php:130
 msgid ""
 "Set quantity number to be added to the cart when clicked on the Buy Now "
 "button from shop page."
 msgstr ""
 
-#: includes/class-woo_buy_now_button_backend.php:62
+#: includes/class-woo_buy_now_button_backend.php:68
 msgid "Settings"
 msgstr ""
 
@@ -331,11 +393,11 @@ msgstr ""
 msgid "Tanvirul Haque"
 msgstr ""
 
-#: includes/admin/class-woo_buy_now_button_settings.php:239
+#: includes/admin/class-woo_buy_now_button_settings.php:257
 msgid "Text Background Color"
 msgstr ""
 
-#: includes/admin/class-woo_buy_now_button_settings.php:231
+#: includes/admin/class-woo_buy_now_button_settings.php:249
 msgid "Text Color"
 msgstr ""
 
@@ -345,8 +407,24 @@ msgid ""
 "extension."
 msgstr ""
 
-#: includes/class-woo_buy_now_button_backend.php:156
+#: includes/class-woo_buy_now_button_backend.php:162
 msgid "The following options control the Buy Now button for this product."
+msgstr ""
+
+#: includes/admin/class-woo_buy_now_button_settings.php:187
+msgid "Upgrade to Pro to disable on categories."
+msgstr ""
+
+#: includes/admin/class-woo_buy_now_button_settings.php:203
+msgid "Upgrade to Pro to disable on products."
+msgstr ""
+
+#: includes/admin/class-woo_buy_now_button_settings.php:171
+msgid "Upgrade to Pro to enable all product types."
+msgstr ""
+
+#: includes/admin/class-woo_buy_now_button_settings.php:152
+msgid "Upgrade to Pro to hide add to cart."
 msgstr ""
 
 #: quick-buy-now-button-for-woocommerce.php:42

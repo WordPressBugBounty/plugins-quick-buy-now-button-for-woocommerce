@@ -45,7 +45,13 @@ if ( ! class_exists( 'Woo_Buy_Now_Button_Backend' ) ) {
 		 * Admin Scripts
 		 */
 		public function admin_assets() {
-			wp_enqueue_script( 'buy-now-button-admin-script', untrailingslashit( plugin_dir_url( __FILE__ ) ) . '/admin/js/scripts.js', array( 'jquery' ), '1.0.1' );
+			$asset_file = array( 'dependencies' => array( 'jquery' ), 'version' => '1.0.0' );
+			if ( file_exists( plugin_dir_path( WOO_BUY_NOW_BUTTON_PLUGIN_FILE ) . 'build/admin.asset.php' ) ) {
+				$asset_file = include plugin_dir_path( WOO_BUY_NOW_BUTTON_PLUGIN_FILE ) . 'build/admin.asset.php';
+			}
+
+			wp_enqueue_style( 'woo-buy-now-button-admin-style', untrailingslashit( plugin_dir_url( WOO_BUY_NOW_BUTTON_PLUGIN_FILE ) ) . '/build/admin.css', array(), WOO_BUY_NOW_BUTTON_PLUGIN_VERSION );
+			wp_enqueue_script( 'woo-buy-now-button-admin-script', untrailingslashit( plugin_dir_url( WOO_BUY_NOW_BUTTON_PLUGIN_FILE ) ) . '/build/admin.js', $asset_file['dependencies'], WOO_BUY_NOW_BUTTON_PLUGIN_VERSION, true );
 		}
 
 		/**

@@ -3,10 +3,10 @@ Contributors: tanvirul
 Tags: buy now, buy now button, quick buy, woocommerce quick buy, woocommerce direct checkout
 Requires PHP: 7.4
 Requires at least: 4.8
-Tested up to: 6.8
+Tested up to: 6.9
 WC requires at least: 4.5
-WC tested up to: 10.1
-Stable tag: 1.0.16
+WC tested up to: 10.4
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -28,6 +28,8 @@ It’s a lightweight plugin that gives you lots of features, such as:
 
 === Key Features: ===
 
+Enjoy fully compatible WooCommerce Buy Now buttons for Variable Products and Simple Products right away!
+
 👉 **Buy Now Button Redirect Location**
 Redirect your customers to the WooCommerce checkout page, cart page, or any custom link for a seamless buying experience.
 
@@ -37,8 +39,8 @@ You can easily control whether the Buy Now button appears or disappears on your 
 👉 **Control Buy Now Button Position on Shop and Product page**
 Customize the location of the Buy Now button on your shop and product pages for better visibility.
 
-👉 **Custom Buy Now Button Text Change**
-Personalize the text on the Buy Now button to match your brand and encourage customers to take action.
+👉 **Change WooCommerce Buy Now Button Text**
+Personalize the text on the WooCommerce Buy Now button to match your brand and encourage customers to take action.
 
 👉 **Default Cart Quantity for the Buy Now button on Shop Page**
 Set a default quantity for the Buy Now button on your shop page to save time and make shopping easier for customers.
@@ -46,21 +48,30 @@ Set a default quantity for the Buy Now button on your shop page to save time and
 👉 **Auto Reset the Cart When Doing Buy Now**
 Automatically reset the cart when a customer clicks the Buy Now button to avoid confusion.
 
-👉 **Buy Now Button Custom Design**
-Customize the Buy Now button design to match your own styles or preferences.
+👉 **WooCommerce Checkout Popup for Instant Checkout (beta)**
+Enable a quick popup checkout window to allow customers to purchase instantly without leaving the page.
+
+👉 **WooCommerce Buy Now Button Shortcode (beta)**
+Use shortcodes `[woo_buy_now_button_single]` and `[woo_buy_now_button_archive]` to place the Buy Now button anywhere on single product page and shop/archive pages.
+
+👉 **Enable WooCommerce Ajax Add to Cart on Product Page**
+Enable Ajax Add to Cart to add products to the Cart faster without reloading the page from the WooCommerce product page.
 
 👉 **Buy Now Button Multilingual Support**
 Translate the Buy Now button into multiple languages for a global customer base and improve accessibility.
 
+👉 **Buy Now Button Style Customization**
+Customize the Buy Now button style to match your own styles or preferences.
+
 === 🔥 Premium Features: ===
 
-[Upgrade to PRO](https://bit.ly/quickbuy-upgrade-to-pro) | [Documentation](https://wpxpress.net/docs/quick-buy-now-button-for-woocommerce/) | [Get Helps & Support](https://wpxpress.net/submit-ticket/)
+[Get PRO Version](https://wpxpress.net/products/quick-buy-now-button-for-woocommerce/) | [Documentation](https://wpxpress.net/docs/quick-buy-now-button-for-woocommerce/) | [Get Helps & Support](https://wpxpress.net/submit-ticket/)
 
-👉 **Replace Add To Cart Button**
-Replace WooCommerce Add to Cart button on single product page and shop page with a Buy Now button for a faster and more streamlined checkout experience.
+👉 **Replace WooCommerce Add To Cart Button**
+Replace the Add to Cart button on product page and shop page with the Buy Now button for faster and more streamlined checkout experience.
 
-👉 **Disable Buy Now Button on Specific Product Types**
-Control the display of the Buy Now button for specific product types for increased flexibility.
+👉 **Enable Buy Now Button on all Product Types**
+Unlock support for all product types, including Grouped and External products, ensuring a seamless checkout experience for everything you sell.
 
 👉 **Control Buy Now Button on Specific Product Categories**
 Control the display of the Buy Now button for specific product categories to target specific customer segments.
@@ -110,6 +121,15 @@ If you are unable to use any of the methods due to internet connectivity and fil
 7. Activate the plugin.
 
 == Changelog ==
+
+= 1.1.0 =
+* Add - Shortcode
+* Add - Popup checkout
+* Add - Ajax Add to Cart
+* Update - Settings
+* Update - Codebase
+* Add - WordPress 6.9+ compatibility
+* Add - WooCommerce 10.4+ compatibility
 
 = 1.0.16 =
 * Add - WooCommerce 10.1+ compatibility

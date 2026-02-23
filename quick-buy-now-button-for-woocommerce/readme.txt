@@ -5,8 +5,8 @@ Requires PHP: 7.4
 Requires at least: 4.8
 Tested up to: 6.9
 WC requires at least: 4.5
-WC tested up to: 10.4
-Stable tag: 1.1.0
+WC tested up to: 10.5
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -122,14 +122,19 @@ If you are unable to use any of the methods due to internet connectivity and fil
 
 == Changelog ==
 
+= 1.1.1 =
+* Add - WooCommerce 10.5 compatibility
+* Fix - Ajax Add to Cart trigger on buy now button
+* Fix - Button click on no variation selected
+
 = 1.1.0 =
 * Add - Shortcode
 * Add - Popup checkout
 * Add - Ajax Add to Cart
-* Update - Settings
-* Update - Codebase
 * Add - WordPress 6.9+ compatibility
 * Add - WooCommerce 10.4+ compatibility
+* Update - Settings
+* Update - Codebase
 
 = 1.0.16 =
 * Add - WooCommerce 10.1+ compatibility

@@ -95,7 +95,9 @@ if ( ! class_exists( 'Woo_Buy_Now_Button_Frontend' ) ) {
 				'is_popup'          => $is_popup,
 				'product_types'     => $this->get_allowed_product_types(),
 				'wc_checkout_js'    => defined( 'WC_PLUGIN_FILE' ) ? plugins_url( 'assets/js/frontend/checkout.js', WC_PLUGIN_FILE ) : '',
-				'nonce'             => wp_create_nonce( 'wbnb_add_to_cart_nonce' ),
+				'nonce'                      => wp_create_nonce( 'wbnb_add_to_cart_nonce' ),
+				'i18n_unavailable_text'      => esc_html__( 'Sorry, this product is unavailable. Please choose a different combination.', 'woo-buy-now-button' ),
+				'i18n_make_a_selection_text' => esc_html__( 'Please select some product options before process to checkout.', 'woo-buy-now-button' ),
 			) );
 
 			if ( 'custom' == get_option( 'wbnb_button_style', 'default' ) ) {

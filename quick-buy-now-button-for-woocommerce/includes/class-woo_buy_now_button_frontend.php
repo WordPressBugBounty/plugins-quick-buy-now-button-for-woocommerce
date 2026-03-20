@@ -414,7 +414,8 @@ if ( ! class_exists( 'Woo_Buy_Now_Button_Frontend' ) ) {
 			}
 
 			$product_id        = $product->get_ID();
-			$button_class      = apply_filters( 'woo_buy_now_button_class_single', 'wc-buy-now-btn wc-buy-now-btn-single single_add_to_cart_button button alt', $product_id );
+			$wp_button_class   = wc_wp_theme_get_element_class_name( 'button' ) ? ' ' . wc_wp_theme_get_element_class_name( 'button' ) : '';
+			$button_class      = apply_filters( 'woo_buy_now_button_class_single', 'wc-buy-now-btn wc-buy-now-btn-single single_add_to_cart_button button alt' . $wp_button_class, $product_id, $wp_button_class );
 			$button_text       = apply_filters( 'woo_buy_now_button_text_single', get_option( 'wbnb_button_text', 'Buy Now' ), $product_id );
 			$redirect_location = apply_filters( 'woo_buy_now_redirect_location', get_option( 'wbnb_redirect_location', 'checkout' ), $product_id );
 			$custom_url        = apply_filters( 'woo_buy_now_redirect_custom_url', get_option( 'wbnb_custom_redirect_url', '' ), $product_id );
@@ -458,7 +459,8 @@ if ( ! class_exists( 'Woo_Buy_Now_Button_Frontend' ) ) {
 			}
 
 			$product_id        = $product->get_ID();
-			$button_class      = apply_filters( 'woo_buy_now_button_class_archive', 'wc-buy-now-btn wc-buy-now-btn-archive button add_to_cart_button', $product_id );
+			$wp_button_class   = wc_wp_theme_get_element_class_name( 'button' ) ? ' ' . wc_wp_theme_get_element_class_name( 'button' ) : '';
+			$button_class      = apply_filters( 'woo_buy_now_button_class_archive', 'wc-buy-now-btn wc-buy-now-btn-archive button add_to_cart_button' . $wp_button_class, $product_id, $wp_button_class );
 			$button_text       = apply_filters( 'woo_buy_now_button_text_archive', get_option( 'wbnb_button_text', 'Buy Now' ), $product_id );
 			$quantity          = apply_filters( 'woo_buy_now_button_quantity', get_option( 'wbnb_default_qnt', 1 ), $product_id );
 			$redirect_location = apply_filters( 'woo_buy_now_redirect_location', get_option( 'wbnb_redirect_location', 'checkout' ), $product_id );

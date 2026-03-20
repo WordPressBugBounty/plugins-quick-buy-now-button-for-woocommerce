@@ -5,8 +5,8 @@ Requires PHP: 7.4
 Requires at least: 4.8
 Tested up to: 6.9
 WC requires at least: 4.5
-WC tested up to: 10.5
-Stable tag: 1.1.1
+WC tested up to: 10.6
+Stable tag: 1.1.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -121,6 +121,10 @@ If you are unable to use any of the methods due to internet connectivity and fil
 7. Activate the plugin.
 
 == Changelog ==
+
+= 1.1.2 =
+* Add - WooCommerce 10.6 compatibility
+* Fix - Button class missing on block theme
 
 = 1.1.1 =
 * Add - WooCommerce 10.5 compatibility

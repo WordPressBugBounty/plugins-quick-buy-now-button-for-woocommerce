@@ -231,9 +231,13 @@ if ( ! class_exists( 'Woo_Buy_Now_Button_Frontend' ) ) {
 					}
 				}
 
-				WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variation );
-
-				$added = true;
+				// Skip add_to_cart if sold individually and already in cart
+				if ( $product->is_sold_individually() && $this->is_product_in_cart( $product_id, $variation_id ) ) {
+					$added = true;
+				} else {
+					WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variation );
+					$added = true;
+				}
 			} elseif ( $product->is_type( 'grouped' ) ) {
 				// For Grouped Product
 				if ( isset( $_POST['quantities'] ) && is_array( $_POST['quantities'] ) ) {
@@ -242,16 +246,26 @@ if ( ! class_exists( 'Woo_Buy_Now_Button_Frontend' ) ) {
 						$child_quantity   = absint( $child_quantity );
 
 						if ( $child_quantity > 0 ) {
-							WC()->cart->add_to_cart( $child_product_id, $child_quantity );
-
-							$added = true;
+							$child_product = wc_get_product( $child_product_id );
+							// Skip add_to_cart if sold individually and already in cart
+							if ( $child_product && $child_product->is_sold_individually() && $this->is_product_in_cart( $child_product_id ) ) {
+								$added = true;
+							} else {
+								WC()->cart->add_to_cart( $child_product_id, $child_quantity );
+								$added = true;
+							}
 						}
 					}
 				}
 			} elseif ( $product->is_type( 'simple' ) ) {
 				// For Simple Product
-				WC()->cart->add_to_cart( $product_id, $quantity );
-				$added = true;
+				// Skip add_to_cart if sold individually and already in cart
+				if ( $product->is_sold_individually() && $this->is_product_in_cart( $product_id ) ) {
+					$added = true;
+				} else {
+					WC()->cart->add_to_cart( $product_id, $quantity );
+					$added = true;
+				}
 			}
 
 			if ( $added ) {
@@ -262,10 +276,27 @@ if ( ! class_exists( 'Woo_Buy_Now_Button_Frontend' ) ) {
 					'redirect_url' => $this->button_redirect_location( $product_id ),
 				);
 
-				// If it's a "Buy Now" request we might want to return fragments for mini-cart updates
+					// If it's a "Buy Now" request we might want to return fragments for mini-cart updates
 				if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 					$data['fragments'] = apply_filters( 'woocommerce_add_to_cart_fragments', array() );
 					$data['cart_hash'] = apply_filters( 'woocommerce_add_to_cart_hash', WC()->cart->get_cart_hash(), WC()->cart->get_cart_hash() );
+
+					// Capture WC notices HTML (e.g. "Product added to cart [View Cart]").
+					// In classic themes these are embedded in fragments; in FSE themes where
+					// the woocommerce_add_to_cart_fragments filter returns nothing (no widget
+					// areas registered), we send the notices separately so JS can inject them.
+					//
+					// For standard (non-Buy-Now) AJAX requests, explicitly queue the message
+					// notice here — mirroring what WooCommerce's own AJAX handler does — so
+					// wc_print_notices() has something to capture. For Buy Now we redirect
+					// immediately, so no notice is needed.
+					if ( ! $is_buy_now ) {
+						wc_add_to_cart_message( array( $product_id => $quantity ), true );
+					}
+
+					ob_start();
+					wc_print_notices();
+					$data['notices'] = ob_get_clean();
 				}
 
 				// Add checkout template if using popup mode
@@ -568,7 +599,10 @@ if ( ! class_exists( 'Woo_Buy_Now_Button_Frontend' ) ) {
 				}
 			} else {
 				// For Simple Product
-				WC()->cart->add_to_cart( $product_id, $quantity );
+				// Skip add_to_cart if sold individually and already in cart
+				if ( ! ( $product->is_sold_individually() && $this->is_product_in_cart( $product_id ) ) ) {
+					WC()->cart->add_to_cart( $product_id, $quantity );
+				}
 
 				// $query_args = array(
 				// 	'add-to-cart' => $product_id,
@@ -644,6 +678,34 @@ if ( ! class_exists( 'Woo_Buy_Now_Button_Frontend' ) ) {
 			$allowed_types = $this->get_allowed_product_types();
 
 			return in_array( $product_type, $allowed_types );
+		}
+
+		/**
+		 * Check if a product (or variation) is already in the cart.
+		 *
+		 * Used to prevent "sold individually" errors when Buy Now is clicked
+		 * for a product that was already added via Add to Cart.
+		 *
+		 * @param int $product_id   The product ID to look for.
+		 * @param int $variation_id Optional. The variation ID for variable products.
+		 * @return bool True if the product is already in the cart.
+		 */
+		private function is_product_in_cart( $product_id, $variation_id = 0 ) {
+			foreach ( WC()->cart->get_cart() as $cart_item ) {
+				if ( $variation_id ) {
+					// For variable products, match both product ID and variation ID
+					if ( (int) $cart_item['product_id'] === (int) $product_id && (int) $cart_item['variation_id'] === (int) $variation_id ) {
+						return true;
+					}
+				} else {
+					// For simple/grouped products, match product ID only
+					if ( (int) $cart_item['product_id'] === (int) $product_id ) {
+						return true;
+					}
+				}
+			}
+
+			return false;
 		}
 	}
 }

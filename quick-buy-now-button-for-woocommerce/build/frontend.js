@@ -143,10 +143,11 @@ var __webpack_exports__ = {};
         fragments = {},
         cart_hash = '',
         redirect_url = '',
-        checkout_template = ''
+        checkout_template = '',
+        notices = ''
       } = response.data || {};
 
-      // Trigger standard WC events
+      // Trigger standard WC events (classic theme)
       $(document.body).trigger('added_to_cart', [fragments, cart_hash, $button]);
       if (isBuyNow) {
         this.handleBuyNowRedirect(isPopup, checkout_template, redirect_url);

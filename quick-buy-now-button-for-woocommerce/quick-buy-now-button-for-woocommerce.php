@@ -4,7 +4,7 @@
 * Plugin URI: https://wordpress.org/plugins/quick-buy-now-button-for-woocommerce/
 * Description: Makes your customers' checkout process easier and faster and allows you to redirect customers directly to the checkout, cart or any external link for quick purchase.
 * Author: Tanvirul Haque
-* Version: 1.1.3
+* Version: 1.1.4
 * Author URI: https://wpxpress.net
 * Text Domain: woo-buy-now-button
 * Domain Path: /languages
@@ -20,7 +20,7 @@
 defined( 'ABSPATH' ) or die( 'Keep Silent' );
 
 if ( ! defined( 'WOO_BUY_NOW_BUTTON_PLUGIN_VERSION' ) ) {
-	define( 'WOO_BUY_NOW_BUTTON_PLUGIN_VERSION', '1.1.3' );
+	define( 'WOO_BUY_NOW_BUTTON_PLUGIN_VERSION', '1.1.4' );
 }
 
 if ( ! defined( 'WOO_BUY_NOW_BUTTON_PLUGIN_FILE' ) ) {

@@ -149,11 +149,25 @@ var __webpack_exports__ = {};
 
       // Trigger standard WC events (classic theme)
       $(document.body).trigger('added_to_cart', [fragments, cart_hash, $button]);
+
+      // Trigger WooCommerce Blocks native event for the Mini Cart block
+      document.body.dispatchEvent(new CustomEvent('wc-blocks_added_to_cart', {
+        bubbles: true,
+        cancelable: true,
+        detail: {
+          fragments,
+          cart_hash
+        }
+      }));
       if (isBuyNow) {
         this.handleBuyNowRedirect(isPopup, checkout_template, redirect_url);
       } else {
         // Standard Add to Cart: Stay on page
         $(document.body).trigger('wc_fragment_refresh');
+
+        // Inject WC notices ("Product added to cart [View Cart]").
+        // Handles FSE themes where the fragment system returns no notices.
+        this.injectWooCommerceNotices(notices);
       }
     },
     /**
@@ -170,6 +184,46 @@ var __webpack_exports__ = {};
       } else {
         window.location.href = redirectUrl;
       }
+    },
+    /**
+     * Inject WooCommerce notices HTML into the page.
+     *
+     * In classic themes, the "Product added to cart [View Cart]" notice is included
+     * in cart fragments and injected automatically. In FSE themes the fragment system
+     * is empty (no widget areas registered), so we receive the notices HTML from the
+     * PHP response and inject it ourselves.
+     *
+     * Creates .woocommerce-notices-wrapper at the top of <main> (or <body> as fallback)
+     * if it does not already exist, matching WooCommerce's own DOM convention.
+     * Auto-hides success notices after 5 s, mirroring WooCommerce JS behaviour.
+     *
+     * Safe to call with an empty string — returns immediately without DOM changes.
+     */
+    injectWooCommerceNotices(noticesHtml) {
+      if (!noticesHtml) {
+        return;
+      }
+
+      // Find or create the notices wrapper
+      let $wrapper = $('.woocommerce-notices-wrapper').first();
+      if (!$wrapper.length) {
+        $wrapper = $('<div class="woocommerce-notices-wrapper"></div>');
+        // Prefer injecting at the top of <main>, fall back to after <body> open
+        const $main = $('main').first();
+        if ($main.length) {
+          $main.prepend($wrapper);
+        } else {
+          $('body').prepend($wrapper);
+        }
+      }
+      $wrapper.html(noticesHtml);
+
+      // Auto-dismiss success messages after 5 s (matches WooCommerce default JS)
+      setTimeout(() => {
+        $wrapper.find('.woocommerce-message').fadeOut(400, function () {
+          $(this).remove();
+        });
+      }, 5000);
     },
     /**
      * Handle AJAX errors

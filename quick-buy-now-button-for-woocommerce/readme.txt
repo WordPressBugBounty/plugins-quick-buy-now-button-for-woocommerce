@@ -6,7 +6,7 @@ Requires at least: 4.8
 Tested up to: 6.9
 WC requires at least: 4.5
 WC tested up to: 10.7
-Stable tag: 1.1.4
+Stable tag: 1.1.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -121,6 +121,9 @@ If you are unable to use any of the methods due to internet connectivity and fil
 7. Activate the plugin.
 
 == Changelog ==
+
+= 1.1.5 =
+* Add - WordPress playground blueprint
 
 = 1.1.4 =
 * Add - AJAX add to cart notices in Block Theme

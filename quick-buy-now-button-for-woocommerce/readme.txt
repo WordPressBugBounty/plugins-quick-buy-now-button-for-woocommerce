@@ -3,10 +3,10 @@ Contributors: tanvirul
 Tags: buy now, buy now button, quick buy, woocommerce quick buy, woocommerce direct checkout
 Requires PHP: 7.4
 Requires at least: 4.8
-Tested up to: 6.9
+Tested up to: 7.0
 WC requires at least: 4.5
-WC tested up to: 10.7
-Stable tag: 1.1.5
+WC tested up to: 10.8
+Stable tag: 1.1.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -121,6 +121,10 @@ If you are unable to use any of the methods due to internet connectivity and fil
 7. Activate the plugin.
 
 == Changelog ==
+
+= 1.1.6 =
+* Add - WordPress 7.0+ compatibility
+* Add - WooCommerce 10.8+ compatibility
 
 = 1.1.5 =
 * Add - WordPress playground blueprint

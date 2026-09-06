@@ -1,6 +1,6 @@
 {
   "name": "quick-buy-now-button-for-woocommerce",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "Quick Buy Now Button for WooCommerce",
   "main": "build/index.js",
   "scripts": {

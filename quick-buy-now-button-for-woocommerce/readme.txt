@@ -4,9 +4,9 @@ Tags: buy now, buy now button, quick buy, woocommerce quick buy, woocommerce dir
 Requires PHP: 7.4
 Requires at least: 4.8
 Tested up to: 7.1
-WC requires at least: 4.5
-WC tested up to: 11.1
-Stable tag: 1.1.7
+WC requires at least: 4.6
+WC tested up to: 11.2
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,7 +65,7 @@ Customize the Buy Now button style to match your own styles or preferences.
 
 === 🔥 Premium Features: ===
 
-[Get PRO Version](https://wpxpress.net/products/quick-buy-now-button-for-woocommerce/) | [Documentation](https://wpxpress.net/docs/quick-buy-now-button-for-woocommerce/) | [Get Helps & Support](https://wpxpress.net/submit-ticket/)
+[Get PRO Version](https://wpxpress.net/products/quick-buy-now-button-for-woocommerce/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=quick-buy-now-free&utm_content=readme-get-pro) | [Documentation](https://wpxpress.net/docs/quick-buy-now-button-for-woocommerce/) | [Get Helps & Support](https://wpxpress.net/submit-ticket/)
 
 👉 **Replace WooCommerce Add To Cart Button**
 Replace the Add to Cart button on product page and shop page with the Buy Now button for faster and more streamlined checkout experience.
@@ -120,7 +120,35 @@ If you are unable to use any of the methods due to internet connectivity and fil
 6. Navigate to Plugins -> Installed
 7. Activate the plugin.
 
+== Frequently Asked Questions ==
+
+= What data does the plugin store? =
+
+To show what the Buy Now button earns, the plugin records Buy Now usage in your own database: which product, button and checkout type was used, whether the product was added, whether checkout was reached, and the device type (mobile or desktop). Orders placed through Buy Now are marked. No IP address, name, email address, user account or browser details are stored, and nothing is sent outside your site.
+
+Detailed records are kept for 365 days; daily totals are kept until the plugin is deleted. Developers can switch recording off with the `woo_buy_now_analytics_should_track` filter, and remove the data on uninstall by adding `define( 'WBNB_REMOVE_ALL_DATA', true );` to wp-config.php.
+
+= Where is the source code of the JavaScript files? =
+
+The readable source is included in the plugin's `src` folder. The `build` folder holds the compiled files, made with `@wordpress/scripts` (`npm install && npm run build`).
+
+= Does the plugin send data to external servers? =
+
+No. it dose not send any data to any external servers.
+
 == Changelog ==
+
+= 1.2.0 =
+* Add - WooCommerce 11.2+ compatibility
+* Dev - `woo_buy_now_button_single_after` and `woo_buy_now_button_archive_after` actions, `woo_buy_now_settings_sections` filter
+* Dev - JavaScript: `window.wbnb` (Popup, AjaxCartHandler, DataCollector) and `wbnb.cart.added` / `wbnb.popup.opened` wp.hooks actions
+* Fix - Buy Now and Ajax Add to Cart failing with "Security check failed" (403) on cached pages or after the cart session starts
+* Fix - WooCommerce settings pages list overwritten, which broke the /wc/v3/settings REST API and other plugins' settings tabs
+* Fix - Popup Checkout showing a blank page when Buy Now is opened in a new tab or without JavaScript
+* Fix - Ajax Add to Cart reporting success when WooCommerce refused the product
+* Fix - Ajax Add to Cart now respects WooCommerce add to cart validation
+* Fix - Grouped product Buy Now failing in Popup Checkout
+* Fix - Default values of Disable on Categories and Disable on Products settings
 
 = 1.1.7 =
 * Add - WordPress 7.1+ compatibility

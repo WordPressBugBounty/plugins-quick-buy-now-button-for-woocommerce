@@ -8,6 +8,8 @@ if ( ! class_exists( 'Woo_Buy_Now_Button_Backend' ) ) {
 	class Woo_Buy_Now_Button_Backend {
 		protected static $_instance = null;
 
+		protected $settings_page = null;
+
 		protected function __construct() {
 			$this->includes();
 			$this->hooks();
@@ -52,6 +54,10 @@ if ( ! class_exists( 'Woo_Buy_Now_Button_Backend' ) ) {
 
 			wp_enqueue_style( 'woo-buy-now-button-admin-style', untrailingslashit( plugin_dir_url( WOO_BUY_NOW_BUTTON_PLUGIN_FILE ) ) . '/build/admin.css', array(), WOO_BUY_NOW_BUTTON_PLUGIN_VERSION );
 			wp_enqueue_script( 'woo-buy-now-button-admin-script', untrailingslashit( plugin_dir_url( WOO_BUY_NOW_BUTTON_PLUGIN_FILE ) ) . '/build/admin.js', $asset_file['dependencies'], WOO_BUY_NOW_BUTTON_PLUGIN_VERSION, true );
+
+			wp_localize_script( 'woo-buy-now-button-admin-script', 'wbnb_admin_params', array(
+				'upgrade_url' => woo_buy_now_button()->upgrade_url( 'product-tab' ),
+			) );
 		}
 
 		/**
@@ -72,7 +78,7 @@ if ( ! class_exists( 'Woo_Buy_Now_Button_Backend' ) ) {
             $pro_link = array(
             	'go-pro' => sprintf( 
             		'<a target="_blank" style="color: #45b450; font-weight: bold;" href="%1$s" title="%2$s">%2$s</a>', 
-            		esc_url( 'https://wpxpress.net/products/quick-buy-now-button-for-woocommerce/' ), 
+            		esc_url( woo_buy_now_button()->upgrade_url( 'plugins-go-pro' ) ),
             		esc_attr__( 'Go Pro', 'woo-buy-now-button' ) 
             	)
             );
@@ -105,7 +111,17 @@ if ( ! class_exists( 'Woo_Buy_Now_Button_Backend' ) ) {
 		 * Admin Settings Page
 		 */
 		public function admin_settings_page( $settings ) {
-			$settings = include dirname( __FILE__ ) . '/admin/class-woo_buy_now_button_settings.php';
+			// Another callback may have returned a single page (or junk) instead of the array.
+			if ( ! is_array( $settings ) ) {
+				$settings = is_object( $settings ) ? array( $settings ) : array();
+			}
+
+			// Create the page once: the filter can run more than once, and each instance adds its own hooks.
+			if ( is_null( $this->settings_page ) ) {
+				$this->settings_page = include dirname( __FILE__ ) . '/admin/class-woo_buy_now_button_settings.php';
+			}
+
+			$settings[] = $this->settings_page;
 
 			return $settings;
 		}

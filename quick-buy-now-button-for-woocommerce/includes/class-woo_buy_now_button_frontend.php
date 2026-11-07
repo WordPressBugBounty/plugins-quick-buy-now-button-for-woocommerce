@@ -8,6 +8,13 @@ if ( ! class_exists( 'Woo_Buy_Now_Button_Frontend' ) ) {
 	class Woo_Buy_Now_Button_Frontend {
 		protected static $_instance = null;
 
+		/**
+		 * Source of the button being rendered (shortcodes set it), null for the default.
+		 *
+		 * @var string|null
+		 */
+		protected $button_source = null;
+
 		protected function __construct() {
 			$this->includes();
 			$this->hooks();
@@ -95,7 +102,8 @@ if ( ! class_exists( 'Woo_Buy_Now_Button_Frontend' ) ) {
 				'is_popup'          => $is_popup,
 				'product_types'     => $this->get_allowed_product_types(),
 				'wc_checkout_js'    => defined( 'WC_PLUGIN_FILE' ) ? plugins_url( 'assets/js/frontend/checkout.js', WC_PLUGIN_FILE ) : '',
-				'nonce'                      => wp_create_nonce( 'wbnb_add_to_cart_nonce' ),
+				'track'             => Woo_Buy_Now_Button_Analytics::is_enabled(),
+				'event_url'         => WC_AJAX::get_endpoint( 'wbnb_event' ),
 				'i18n_unavailable_text'      => esc_html__( 'Sorry, this product is unavailable. Please choose a different combination.', 'woo-buy-now-button' ),
 				'i18n_make_a_selection_text' => esc_html__( 'Please select some product options before process to checkout.', 'woo-buy-now-button' ),
 			) );
@@ -185,11 +193,8 @@ if ( ! class_exists( 'Woo_Buy_Now_Button_Frontend' ) ) {
 		 * AJAX Add to Cart
 		 */
 		public function ajax_add_to_cart() {
-			// Security: Verify nonce
-			if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'wbnb_add_to_cart_nonce' ) ) {
-				wp_send_json_error( array( 'message' => esc_html__( 'Security check failed.', 'woo-buy-now-button' ) ), 403 );
-			}
-
+			// No nonce, same as WooCommerce's wc-ajax=add_to_cart: it only changes the visitor's own cart, and a nonce in cached pages goes stale.
+			// phpcs:disable WordPress.Security.NonceVerification.Missing
 			if ( ! isset( $_POST['product_id'] ) ) {
 				wp_send_json_error( array( 'message' => esc_html__( 'Invalid product.', 'woo-buy-now-button' ) ) );
 			}
@@ -219,7 +224,9 @@ if ( ! class_exists( 'Woo_Buy_Now_Button_Frontend' ) ) {
 				}
 			}
 
-			$added = false;
+			// Product ID => quantity of the items that ended up in the cart (used for the "added to cart" notice).
+			// Validation and add_to_cart() mirror WC_Form_Handler: both can refuse an item and queue an error notice.
+			$added_to_cart = array();
 
 			if ( $variation_id && $product->is_type( 'variable' ) ) {
 				// For Variable Product
@@ -233,40 +240,46 @@ if ( ! class_exists( 'Woo_Buy_Now_Button_Frontend' ) ) {
 
 				// Skip add_to_cart if sold individually and already in cart
 				if ( $product->is_sold_individually() && $this->is_product_in_cart( $product_id, $variation_id ) ) {
-					$added = true;
-				} else {
-					WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variation );
-					$added = true;
+					$added_to_cart[ $product_id ] = $quantity;
+				} elseif ( apply_filters( 'woocommerce_add_to_cart_validation', true, $product_id, $quantity, $variation_id, $variation ) && false !== WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variation ) ) {
+					$added_to_cart[ $product_id ] = $quantity;
 				}
 			} elseif ( $product->is_type( 'grouped' ) ) {
 				// For Grouped Product
+				$has_quantity = false;
+
 				if ( isset( $_POST['quantities'] ) && is_array( $_POST['quantities'] ) ) {
 					foreach ( $_POST['quantities'] as $child_product_id => $child_quantity ) {
 						$child_product_id = absint( $child_product_id );
 						$child_quantity   = absint( $child_quantity );
 
 						if ( $child_quantity > 0 ) {
+							$has_quantity  = true;
 							$child_product = wc_get_product( $child_product_id );
 							// Skip add_to_cart if sold individually and already in cart
 							if ( $child_product && $child_product->is_sold_individually() && $this->is_product_in_cart( $child_product_id ) ) {
-								$added = true;
-							} else {
-								WC()->cart->add_to_cart( $child_product_id, $child_quantity );
-								$added = true;
+								$added_to_cart[ $child_product_id ] = $child_quantity;
+							} elseif ( apply_filters( 'woocommerce_add_to_cart_validation', true, $child_product_id, $child_quantity ) && false !== WC()->cart->add_to_cart( $child_product_id, $child_quantity ) ) {
+								$added_to_cart[ $child_product_id ] = $child_quantity;
 							}
 						}
 					}
+				}
+
+				if ( ! $has_quantity ) {
+					wp_send_json_error( array( 'message' => esc_html__( 'Please choose the quantity of items you wish to add to your cart.', 'woo-buy-now-button' ) ) );
 				}
 			} elseif ( $product->is_type( 'simple' ) ) {
 				// For Simple Product
 				// Skip add_to_cart if sold individually and already in cart
 				if ( $product->is_sold_individually() && $this->is_product_in_cart( $product_id ) ) {
-					$added = true;
-				} else {
-					WC()->cart->add_to_cart( $product_id, $quantity );
-					$added = true;
+					$added_to_cart[ $product_id ] = $quantity;
+				} elseif ( apply_filters( 'woocommerce_add_to_cart_validation', true, $product_id, $quantity ) && false !== WC()->cart->add_to_cart( $product_id, $quantity ) ) {
+					$added_to_cart[ $product_id ] = $quantity;
 				}
 			}
+
+			$added = ! empty( $added_to_cart );
 
 			if ( $added ) {
 				do_action( 'woocommerce_ajax_added_to_cart', $product_id );
@@ -291,7 +304,7 @@ if ( ! class_exists( 'Woo_Buy_Now_Button_Frontend' ) ) {
 					// wc_print_notices() has something to capture. For Buy Now we redirect
 					// immediately, so no notice is needed.
 					if ( ! $is_buy_now ) {
-						wc_add_to_cart_message( array( $product_id => $quantity ), true );
+						wc_add_to_cart_message( $added_to_cart, true );
 					}
 
 					ob_start();
@@ -312,10 +325,28 @@ if ( ! class_exists( 'Woo_Buy_Now_Button_Frontend' ) ) {
 					$data['checkout_template'] = $checkout_html;
 				}
 
+				$data = apply_filters( 'woo_buy_now_ajax_response', $data, $product_id );
+
 				wp_send_json_success( $data );
 			} else {
-				wp_send_json_error( array( 'message' => esc_html__( 'Failed to add product to cart.', 'woo-buy-now-button' ) ) );
+				// Return WooCommerce's own error notices (stock limit, validation, ...) as plain text for the JS alert.
+				// Links such as "View cart" are dropped, they can't be clicked in an alert.
+				$messages = array();
+				foreach ( wc_get_notices( 'error' ) as $notice ) {
+					$text       = preg_replace( '#<a\b[^>]*>.*?</a>#is', '', $notice['notice'] );
+					$messages[] = trim( wp_strip_all_tags( html_entity_decode( $text, ENT_QUOTES, get_bloginfo( 'charset' ) ) ) );
+				}
+
+				// The JS shows the error now, so don't show it again on the next page load.
+				$notices = wc_get_notices();
+				unset( $notices['error'] );
+				wc_set_notices( $notices );
+
+				$message = implode( "\n", array_filter( $messages ) );
+
+				wp_send_json_error( array( 'message' => $message ? $message : esc_html__( 'Failed to add product to cart.', 'woo-buy-now-button' ) ) );
 			}
+			// phpcs:enable WordPress.Security.NonceVerification.Missing
 		}
 
 		/**
@@ -363,9 +394,13 @@ if ( ! class_exists( 'Woo_Buy_Now_Button_Frontend' ) ) {
 
 			ob_start();
 
+			$this->button_source = 'shortcode-single';
+
 			echo '<form class="cart" action="' . esc_url( get_the_permalink() ) . '" method="post" enctype="multipart/form-data">';
 			$this->buy_now_button_single();
 			echo '</form>';
+
+			$this->button_source = null;
 
 			$output = ob_get_clean();
 
@@ -396,7 +431,9 @@ if ( ! class_exists( 'Woo_Buy_Now_Button_Frontend' ) ) {
 			}
 
 			ob_start();
+			$this->button_source = 'shortcode-archive';
 			$this->buy_now_button_archive();
+			$this->button_source = null;
 			$output = ob_get_clean();
 
 			// Restore original product if we changed it
@@ -417,6 +454,7 @@ if ( ! class_exists( 'Woo_Buy_Now_Button_Frontend' ) ) {
 
 			switch ( $redirect ) {
 				case 'checkout':
+				case 'popup-checkout': // JS opens the popup; checkout page is the no-JS fallback
 					$redirect_url = wc_get_checkout_url();
 					break;
 				case 'cart':
@@ -450,25 +488,32 @@ if ( ! class_exists( 'Woo_Buy_Now_Button_Frontend' ) ) {
 			$button_text       = apply_filters( 'woo_buy_now_button_text_single', get_option( 'wbnb_button_text', 'Buy Now' ), $product_id );
 			$redirect_location = apply_filters( 'woo_buy_now_redirect_location', get_option( 'wbnb_redirect_location', 'checkout' ), $product_id );
 			$custom_url        = apply_filters( 'woo_buy_now_redirect_custom_url', get_option( 'wbnb_custom_redirect_url', '' ), $product_id );
+			$source            = $this->button_source ? $this->button_source : 'single';
 
 			do_action( 'woo_buy_now_button_single_before_load', $product );
 
 			if ( ! empty( $custom_url ) && 'custom' === $redirect_location ) {
 				// For custom link
-				return printf( '<a href="%s" target="_blank" class="%s" data-wc-buy-now="true" rel="nofollow">%s</a>',
+				printf( '<a href="%s" target="_blank" class="%s" data-wc-buy-now="true" data-redirect-location="custom" data-product_id="%d" data-source="%s" rel="nofollow">%s</a>',
 					esc_url( $custom_url ),
 					esc_attr( $button_class ),
+					$product_id,
+					esc_attr( $source ),
+					esc_html__( $button_text, 'woo-buy-now-button' )
+				);
+			} else {
+				printf( '<input type="hidden" name="wbnb_source" value="%s" /><button type="submit" name="wc-quick-buy-now" value="%d" class="%s" data-wc-buy-now="true" data-redirect-location="%s" data-product_type="%s" data-source="%s">%s</button>',
+					esc_attr( $source ),
+					$product_id,
+					esc_attr( $button_class ),
+					esc_attr( $redirect_location ),
+					esc_attr( $product->get_type() ),
+					esc_attr( $source ),
 					esc_html__( $button_text, 'woo-buy-now-button' )
 				);
 			}
 
-			return printf( '<button type="submit" name="wc-quick-buy-now" value="%d" class="%s" data-wc-buy-now="true" data-redirect-location="%s" data-product_type="%s">%s</button>',
-				$product_id,
-				esc_attr( $button_class ),
-				esc_attr( $redirect_location ),
-				esc_attr( $product->get_type() ),
-				esc_html__( $button_text, 'woo-buy-now-button' )
-			);
+			do_action( 'woo_buy_now_button_single_after', $product, $source );
 		}
 
 		/**
@@ -496,6 +541,7 @@ if ( ! class_exists( 'Woo_Buy_Now_Button_Frontend' ) ) {
 			$quantity          = apply_filters( 'woo_buy_now_button_quantity', get_option( 'wbnb_default_qnt', 1 ), $product_id );
 			$redirect_location = apply_filters( 'woo_buy_now_redirect_location', get_option( 'wbnb_redirect_location', 'checkout' ), $product_id );
 			$custom_url        = apply_filters( 'woo_buy_now_redirect_custom_url', get_option( 'wbnb_custom_redirect_url', '' ), $product_id );
+			$source            = $this->button_source ? $this->button_source : 'archive';
 
 			// Check quantity is not bigger then stock
 			if ( $product->get_manage_stock() ) {
@@ -510,20 +556,23 @@ if ( ! class_exists( 'Woo_Buy_Now_Button_Frontend' ) ) {
 			do_action( 'woo_buy_now_button_archive_before_load', $product );
 
 			// Only process simple products
-			if ( $product->is_type( 'simple' ) ) {
-				// For custom link
-				if ( ! empty( $custom_url ) && 'custom' === $redirect_location ) {
-					return printf( '<a href="%s" target="_blank" data-quantity="%s" class="%s" data-product_id="%s" data-wc-buy-now="true" data-redirect-location="%s" data-product_type="%s" rel="nofollow">%s</a>',
-						esc_url( $custom_url ),
-						intval( $quantity ),
-						esc_attr( $button_class ),
-						$product_id,
-						esc_attr( $redirect_location ),
-						esc_attr( $product->get_type() ),
-						esc_html__( $button_text, 'woo-buy-now-button' )
-					);
-				}
+			if ( ! $product->is_type( 'simple' ) ) {
+				return;
+			}
 
+			if ( ! empty( $custom_url ) && 'custom' === $redirect_location ) {
+				// For custom link
+				printf( '<a href="%s" target="_blank" data-quantity="%s" class="%s" data-product_id="%s" data-wc-buy-now="true" data-redirect-location="%s" data-product_type="%s" data-source="%s" rel="nofollow">%s</a>',
+					esc_url( $custom_url ),
+					intval( $quantity ),
+					esc_attr( $button_class ),
+					$product_id,
+					esc_attr( $redirect_location ),
+					esc_attr( $product->get_type() ),
+					esc_attr( $source ),
+					esc_html__( $button_text, 'woo-buy-now-button' )
+				);
+			} else {
 				// Auto reset cart before buy now handled in AJAX or link redirect
 
 				$redirect_url = $this->button_redirect_location( $product_id );
@@ -531,23 +580,25 @@ if ( ! class_exists( 'Woo_Buy_Now_Button_Frontend' ) ) {
 				$redirect_url = add_query_arg(
 					array(
 						'wc-quick-buy-now' => $product_id,
-						'quantity'         => intval( $quantity )
+						'quantity'         => intval( $quantity ),
+						'wbnb_source'      => $source,
 					),
 					$redirect_url
 				);
 
-				return printf( '<a href="%s" data-quantity="%s" class="%s" data-product_id="%s" data-wc-buy-now="true" data-redirect-location="%s" data-product_type="%s" rel="nofollow">%s</a>',
+				printf( '<a href="%s" data-quantity="%s" class="%s" data-product_id="%s" data-wc-buy-now="true" data-redirect-location="%s" data-product_type="%s" data-source="%s" rel="nofollow">%s</a>',
 					esc_url( $redirect_url ),
 					intval( $quantity ),
 					esc_attr( $button_class ),
 					$product_id,
 					esc_attr( $redirect_location ),
 					esc_attr( $product->get_type() ),
+					esc_attr( $source ),
 					esc_html__( $button_text, 'woo-buy-now-button' )
 				);
 			}
 
-			return;
+			do_action( 'woo_buy_now_button_archive_after', $product, $source );
 		}
 
 		/**
@@ -690,7 +741,7 @@ if ( ! class_exists( 'Woo_Buy_Now_Button_Frontend' ) ) {
 		 * @param int $variation_id Optional. The variation ID for variable products.
 		 * @return bool True if the product is already in the cart.
 		 */
-		private function is_product_in_cart( $product_id, $variation_id = 0 ) {
+		protected function is_product_in_cart( $product_id, $variation_id = 0 ) {
 			foreach ( WC()->cart->get_cart() as $cart_item ) {
 				if ( $variation_id ) {
 					// For variable products, match both product ID and variation ID
